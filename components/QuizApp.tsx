@@ -60,6 +60,7 @@ export default function QuizApp() {
   const [history, setHistory] = useState<SavedQuiz[]>([]);
   const [savedCurrent, setSavedCurrent] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
+  const [wrongSubject, setWrongSubject] = useState<string | null>(null);
   const [tip, setTip] = useState(0);
 
   useEffect(() => { setHistory(loadHistory()); }, []);
@@ -80,6 +81,18 @@ export default function QuizApp() {
     history.forEach((h) => { const k = h.subject || "기타"; if (!g[k]) g[k] = []; g[k].push(h); });
     return g;
   }, [history]);
+
+  // 수업별 오답 모음
+  const wrongCollection = useMemo(() => {
+    if (!wrongSubject) return [];
+    return history
+      .filter((h) => (h.subject || "기타") === wrongSubject)
+      .flatMap((h) =>
+        h.questions
+          .map((q, i) => ({ ...q, userAnswer: h.answers[i] ?? "", quizTitle: h.title, quizDate: h.date }))
+          .filter((item) => item.userAnswer.trim().toLowerCase() !== item.answer.trim().toLowerCase())
+      );
+  }, [wrongSubject, history]);
 
   function startRound(qs: Question[], review: boolean) {
     setActiveQuestions(qs); setAnswers({}); setResult(null);
@@ -205,7 +218,27 @@ export default function QuizApp() {
                 {showHistory&&(<div className="mt-3 space-y-4">
                   {Object.entries(grouped).map(([sub,items])=>(
                     <div key={sub}>
-                      <p className="mb-2 text-xs font-medium text-[#7C9CF5]">📚 {sub}</p>
+                      <div className="mb-2 flex items-center gap-3">
+                        <p className="text-xs font-medium text-[#7C9CF5]">📚 {sub}</p>
+                        <button onClick={()=>setWrongSubject(wrongSubject===sub?null:sub)} className="rounded-full bg-[#2A1A2E] px-2.5 py-0.5 text-xs text-[#E5746B] transition hover:bg-[#3A2A3E]">{wrongSubject===sub?"✕ 닫기":"📋 오답 모음"}</button>
+                      </div>
+                      {wrongSubject===sub&&wrongCollection.length>0&&(
+                        <div className="mb-3 space-y-2">
+                          <p className="text-xs text-[#E5746B]">틀린 문제 {wrongCollection.length}개</p>
+                          {wrongCollection.map((w,wi)=>(
+                            <div key={wi} className="rounded-xl border border-[#3A2A2E] bg-[#211A1C] p-4">
+                              <p className="text-xs text-[#6B7280] mb-1">{w.quizTitle} · {new Date(w.quizDate).toLocaleDateString("ko-KR")}</p>
+                              <p className="text-sm font-medium text-[#F4F6F9] mb-1">{w.prompt}</p>
+                              <p className="text-xs text-[#E5746B]">내 답: {w.userAnswer||"(없음)"}</p>
+                              <p className="text-xs text-[#5ED3A8]">정답: {w.answer}</p>
+                              {w.explanation&&<p className="mt-1 text-xs text-[#9AA1AC]">{w.explanation}</p>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {wrongSubject===sub&&wrongCollection.length===0&&(
+                        <p className="mb-3 text-xs text-[#5ED3A8]">✓ 이 수업에서 틀린 문제가 없어요!</p>
+                      )}
                       <div className="space-y-2">{items.map((h)=>(
                         <div key={h.id} className="flex items-center justify-between rounded-xl border border-[#2A2E37] bg-[#1D2026] px-4 py-3">
                           <div className="min-w-0 flex-1"><p className="truncate text-sm text-[#F4F6F9]">{h.title}</p><p className="text-xs text-[#6B7280]">{new Date(h.date).toLocaleDateString("ko-KR")} · {h.score}/{h.total}</p></div>
