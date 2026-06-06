@@ -17,7 +17,7 @@ const STORAGE_KEY = "exam-prep-history";
 const MAX_SAVED = 30;
 const COUNTS = [5, 8, 12];
 const DIFFS: { value: Difficulty; label: string }[] = [
-  { value: "easy", label: "쉬움" }, { value: "normal", label: "보통" }, { value: "hard", label: "어려움" },
+  { value: "easy", label: "쉬움" }, { value: "normal", label: "보통" }, { value: "hard", label: "어려움" }, { value: "random", label: "랜덤" },
 ];
 const CREATE_TIPS = ["자료를 읽는 중...", "핵심 개념을 찾는 중...", "문제를 만드는 중...", "해설을 다듬는 중..."];
 const SIMILAR_TIPS = ["틀린 개념을 분석하는 중...", "비슷한 새 문제를 만드는 중...", "마지막으로 다듬는 중..."];

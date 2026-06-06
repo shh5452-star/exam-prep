@@ -17,12 +17,13 @@ export type GeneratedQuiz = {
   questions: QuizQuestion[];
 };
 
-export type Difficulty = "easy" | "normal" | "hard";
+export type Difficulty = "easy" | "normal" | "hard" | "random";
 
 const DIFFICULTY_GUIDE: Record<Difficulty, string> = {
   easy: "난이도는 '쉬움'. 강의 자료에 직접 나온 핵심 용어와 사실을 그대로 묻는 기본 확인 문제 위주로 만들어줘.",
   normal: "난이도는 '보통'. 개념 이해와 간단한 적용을 묻는 문제를 적절히 섞어줘.",
   hard: "난이도는 '어려움'. 개념을 응용·비교·추론해야 풀 수 있는 까다로운 문제 위주로, 헷갈리는 보기를 포함해서 만들어줘.",
+  random: "난이도를 쉬움·보통·어려움을 골고루 섞어서 다양하게 만들어줘. 쉬운 문제부터 어려운 문제까지 랜덤으로 배치해줘.",
 };
 
 const SYSTEM = [
