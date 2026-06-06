@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createQuiz, createQuizFromPdf, createSimilarQuiz, createSimilarQuizFromPdf, type QuizResult } from "@/app/actions";
 
 type Phase = "input" | "loading" | "quiz" | "result";
-type Difficulty = "easy" | "normal" | "hard";
+type Difficulty "easy" | "normal" | "hard" | "random";
 type Question = QuizResult["questions"][number];
 type SavedQuiz = {
   id: string; subject: string; title: string; date: string;
