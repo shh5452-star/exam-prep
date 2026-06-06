@@ -148,9 +148,12 @@ export default function QuizApp() {
   }
 
   return (
-    <div className="min-h-screen bg-[#15171C] text-[#E7E9ED]">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#0B0E18] via-[#131629] to-[#1A1030] text-[#E7E9ED]">
+      <div className="pointer-events-none absolute -left-40 -top-40 h-96 w-96 rounded-full bg-[#7C9CF5] opacity-[0.04] blur-3xl" />
+      <div className="pointer-events-none absolute -right-32 top-1/3 h-80 w-80 rounded-full bg-[#A78BFA] opacity-[0.05] blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-40 left-1/3 h-96 w-96 rounded-full bg-[#5ED3A8] opacity-[0.03] blur-3xl" />
       <style>{`@keyframes confetti-fall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}`}</style>
-      <div className="mx-auto max-w-2xl px-5 py-12">
+      <div className="relative z-10 mx-auto max-w-2xl px-5 py-12">
         <header className="mb-8 text-center">
           <h1 className="text-3xl font-medium tracking-tight text-[#F4F6F9]">📝 시험 대비 도우미</h1>
           <p className="mt-1.5 text-[15px] text-[#8A92A0]">강의 자료를 붙여넣거나 PDF를 올리면 AI가 예상문제를 만들어 드려요</p>
@@ -257,9 +260,7 @@ export default function QuizApp() {
             onSave={handleSave} onRetryAll={()=>startRound(allQuestions,false)} onReset={resetAll}/>
         )}
 
-        <footer className="mt-16 border-t border-[#2A2E37] pt-6 text-center text-xs text-[#6B7280]">
-          Powered by Claude AI · 만든 사람: 회현
-        </footer>
+
       </div>
     </div>
   );
